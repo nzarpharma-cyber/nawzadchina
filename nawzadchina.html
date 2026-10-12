@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نەوزاد چین | Nawzad China - بەستەری بازرگانیت لەگەڵ چین</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207',
+                        },
+                        slateDark: '#0f172a',
+                    },
+                    fontFamily: {
+                        kurdish: ['Vazirmatn', 'Noto Sans Arabic', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        body {
+            font-family: 'Vazirmatn', 'Noto Sans Arabic', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        /* Smooth step panel transition */
+        .step-panel {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .step-panel.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Interactive card styles */
+        .service-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .service-card.selected {
+            border-color: #eab308;
+            background-color: #fffdf0;
+            box-shadow: 0 10px 15px -3px rgba(234, 179, 8, 0.15), 0 4px 6px -4px rgba(234, 179, 8, 0.1);
+        }
+
+        /* Modal Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-modal, #printable-modal * {
+                visibility: visible;
+            }
+            #printable-modal {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-slate-50 text-slate-900 selection:bg-brand-400 selection:text-slate-900">
+
+    <header class="bg-slateDark text-white sticky top-0 z-40 shadow-md border-b-4 border-brand-500">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-11 h-11 bg-brand-500 text-slateDark rounded-xl flex items-center justify-center font-black text-xl shadow-lg ring-2 ring-brand-400/30">
+                    N
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl tracking-tight text-white flex items-center gap-2">
+                        نەوزاد چین <span class="text-brand-400 text-xs font-semibold px-2 py-0.5 rounded-full bg-brand-500/10 border border-brand-500/30">Nawzad China</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 font-medium">پردی پەیوەندی بازرگانیت لەگەڵ چین</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2 sm:gap-3 text-xs">
+                <!-- Config Modal Trigger Button -->
+                <button type="button" onclick="openConfigModal()" class="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-brand-400 border border-slate-700 px-3 py-1.5 rounded-lg transition font-medium">
+                    <i class="ph-bold ph-gear text-base"></i>
+                    <span class="hidden sm:inline">ڕێکخستنی وەرگرتن</span>
+                </button>
+                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> چالاکە
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto w-full px-4 py-6 sm:py-10 flex-grow">
+        
+        <!-- Progress Bar & Indicator -->
+        <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 mb-8">
+            <div class="flex items-center justify-between relative mb-2">
+                <div id="progress-line" class="absolute top-1/2 left-0 right-0 h-1 bg-slate-200 -translate-y-1/2 z-0 transition-all duration-500"></div>
+                <div id="progress-line-active" class="absolute top-1/2 right-0 h-1 bg-brand-500 -translate-y-1/2 z-0 transition-all duration-500" style="width: 0%;"></div>
+
+                <!-- Step 1 Indicator -->
+                <div class="relative z-10 flex flex-col items-center">
+                    <div id="circle-1" class="w-10 h-10 rounded-full bg-brand-500 text-slateDark font-bold flex items-center justify-center ring-4 ring-white shadow transition-all duration-300">
+                        1
+                    </div>
+                    <span class="text-xs font-bold mt-2 text-slate-800">زانیاری بەکارهێنەر</span>
+                </div>
+
+                <!-- Step 2 Indicator -->
+                <div class="relative z-10 flex flex-col items-center">
+                    <div id="circle-2" class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center ring-4 ring-white shadow transition-all duration-300">
+                        2
+                    </div>
+                    <span class="text-xs font-bold mt-2 text-slate-500" id="label-step-2">دیاریکردنی خزمەتگوزاری</span>
+                </div>
+
+                <!-- Step 3 Indicator -->
+                <div class="relative z-10 flex flex-col items-center">
+                    <div id="circle-3" class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center ring-4 ring-white shadow transition-all duration-300">
+                        3
+                    </div>
+                    <span class="text-xs font-bold mt-2 text-slate-500" id="label-step-3">کۆتایی و ناردن</span>
+                </div>
+            </div>
+        </div>
+
+        <form id="orderForm" onsubmit="event.preventDefault();" class="space-y-6">
+            
+            <!-- STEP 1: USER INFORMATION -->
+            <div id="step-1" class="step-panel active bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="ph-bold ph-user-circle text-brand-500 text-2xl"></i>
+                        زانیاری کەسیی و پەیوەندی
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">تکایە زانیارییەکانت بە وردی پڕبکەرەوە بۆ ئەوەی بپەیوەندیت پێوە بکەین.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Full Name -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-800 mb-2" for="fullname">
+                            ناو و پاشناو <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <i class="ph-bold ph-user text-lg"></i>
+                            </span>
+                            <input type="text" id="fullname" required placeholder="m.g. ئەحمەد محەمەد" 
+                                class="w-full pl-3 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm transition">
+                        </div>
+                        <p id="err-fullname" class="text-xs text-rose-500 mt-1 hidden">تکایە ناوی تەواوت بنووسە.</p>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-800 mb-2" for="phone">
+                            ژمارەی مۆبایل / واتسئاپ <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <i class="ph-bold ph-phone text-lg"></i>
+                            </span>
+                            <input type="tel" id="phone" required placeholder="0770 123 4567" dir="ltr"
+                                class="w-full pl-3 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-xl text-right focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm transition">
+                        </div>
+                        <p id="err-phone" class="text-xs text-rose-500 mt-1 hidden">تکایە ژمارەی مۆبایلی دروست بنووسە.</p>
+                    </div>
+
+                    <!-- City Select -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-slate-800 mb-2" for="city">
+                            شار / شوێنی نیشتەجێبوون <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <i class="ph-bold ph-map-pin text-lg"></i>
+                            </span>
+                            <select id="city" required class="w-full pl-3 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm transition appearance-none">
+                                <option value="" disabled selected>شارەکەت هەڵبژێرە...</option>
+                                <option value="سلێمانی">سلێمانی</option>
+                                <option value="هەولێر">هەولێر</option>
+                                <option value="دهۆک">دهۆک</option>
+                                <option value="هەڵەبجە">هەڵەبجە</option>
+                                <option value="کەرکووک">کەرکووک</option>
+                                <option value="بەغدا">بەغدا</option>
+                                <option value="تریش">شاری تر...</option>
+                            </select>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                                <i class="ph-bold ph-caret-down"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button type="button" onclick="nextStep(2)" class="bg-brand-500 hover:bg-brand-600 text-slateDark font-bold px-8 py-3 rounded-xl shadow-lg shadow-brand-500/20 flex items-center gap-2 transition transform active:scale-95">
+                        <span>قۆناغی دواتر</span>
+                        <i class="ph-bold ph-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 2: SERVICES SELECTION -->
+            <div id="step-2" class="step-panel bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="ph-bold ph-squares-four text-brand-500 text-2xl"></i>
+                        دیاریکردنی جۆری خزمەتگوزارییەکان
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">ئەو خزمەتگوزارییانەی دەتەوێت هەڵیانبژێرە (دەتوانیت زیاتر لە یەک دانە هەڵبژێریت):</p>
+                </div>
+
+                <div class="space-y-4">
+
+                    <!-- Service 1: Product Sourcing -->
+                    <div class="service-card border-2 border-slate-200 rounded-2xl p-4 sm:p-5 cursor-pointer" onclick="toggleService('sourcing')">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="chk-sourcing" class="w-5 h-5 accent-brand-500 rounded text-brand-500 focus:ring-brand-500" onclick="event.stopPropagation(); updateCardState('sourcing');">
+                                <div>
+                                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                        ١. کڕین و دۆزینەوەی کاڵا (Product Purchasing)
+                                    </h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">کڕینی راستەوخۆ لە کارگەکان، عەلی بابا، 1688 یان تاوباو.</p>
+                                </div>
+                            </div>
+                            <span class="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-amber-200 hidden sm:inline-block">بازرگانی</span>
+                        </div>
+
+                        <!-- Sub Options (Dynamic) -->
+                        <div id="sub-sourcing" class="mt-4 pt-4 border-t border-slate-200/80 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden" onclick="event.stopPropagation();">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">جۆری کاڵا / ناوی کاڵا</label>
+                                <input type="text" id="source-type" placeholder="m.g. کەلوپەلی ئەلیکترۆنی، جلوبەرگ..." class="w-full p-2.5 text-xs bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">بڕ / ژمارەی کاڵا</label>
+                                <input type="text" id="source-qty" placeholder="m.g. 500 دانە یان 10 کارتۆن" class="w-full p-2.5 text-xs bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold text-slate-700 mb-1">لینکی کاڵا (Alibaba / 1688 / Taobao / Website)</label>
+                                <input type="url" id="source-link" dir="ltr" placeholder="https://..." class="w-full p-2.5 text-xs bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 text-left">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">ئەو نرخەی دۆزیوتەتەوە یان بودجە ($)</label>
+                                <input type="text" id="source-price" placeholder="m.g. $1,200 یان $2.5 بۆ هر دانەیەک" class="w-full p-2.5 text-xs bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 2: Cargo & Shipping -->
+                    <div class="service-card border-2 border-slate-200 rounded-2xl p-4 sm:p-5 cursor-pointer" onclick="toggleService('cargo')">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="chk-cargo" class="w-5 h-5 accent-brand-500 rounded text-brand-500 focus:ring-brand-500" onclick="event.stopPropagation(); updateCardState('cargo');">
+                                <div>
+                                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                        ٢. هێنانەوە و گواستنەوەی کاڵا (Cargo & Logistics)
+                                    </h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">گواستنەوەی دەریایی و ئاسمانی لە چینەوە بۆ عێراق و هەرێمی کوردستان.</p>
+                                </div>
+                            </div>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-200 hidden sm:inline-block">بارکردن</span>
+                        </div>
+
+                        <!-- Sub Options -->
+                        <div id="sub-cargo" class="mt-4 pt-4 border-t border-slate-200/80 space-y-3 hidden" onclick="event.stopPropagation();">
+                            <span class="block text-xs font-bold text-slate-700">جۆری گواستنەوە هەڵبژێرە:</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <label class="flex items-center gap-2 bg-white p-2.5 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50">
+                                    <input type="radio" name="cargo-type" value="کۆنتێنەری کامل (FCL)" class="accent-brand-500" checked>
+                                    <span class="text-xs font-semibold">کۆنتێنەری کامل (FCL)</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-2.5 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50">
+                                    <input type="radio" name="cargo-type" value="مەترکاری / CBM (LCL)" class="accent-brand-500">
+                                    <span class="text-xs font-semibold">مەترکاری (CBM)</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-2.5 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50">
+                                    <input type="radio" name="cargo-type" value="گواستنەوەی ئاسمانی (Air Freight)" class="accent-brand-500">
+                                    <span class="text-xs font-semibold">بارکردنی ئاسمانی</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 3: Inspection -->
+                    <div class="service-card border-2 border-slate-200 rounded-2xl p-4 sm:p-5 cursor-pointer" onclick="toggleService('inspection')">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="chk-inspection" class="w-5 h-5 accent-brand-500 rounded text-brand-500 focus:ring-brand-500" onclick="event.stopPropagation(); updateCardState('inspection');">
+                                <div>
+                                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                        ٣. پشکنین و چێککردنەوەی کاڵا (Quality Control)
+                                    </h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">پشکنینی کوالێتی و کارگەکان پێش باری کاڵاکە.</p>
+                                </div>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-emerald-200 hidden sm:inline-block">دڵنیایی</span>
+                        </div>
+
+                        <!-- Sub Options -->
+                        <div id="sub-inspection" class="mt-4 pt-4 border-t border-slate-200/80 space-y-2 hidden" onclick="event.stopPropagation();">
+                            <label class="flex items-center gap-2 text-xs font-medium text-slate-800 cursor-pointer">
+                                <input type="checkbox" id="insp-pre" value="پشکنینی کارگە بەرلە کڕین" class="accent-brand-500 rounded">
+                                <span>پشکنینی کارگە و کوالێتی بەرلە دانانی ئۆردەر</span>
+                            </label>
+                            <label class="flex items-center gap-2 text-xs font-medium text-slate-800 cursor-pointer">
+                                <input type="checkbox" id="insp-loading" value="پشکنینی کاڵا لە کاتی بارکردن" class="accent-brand-500 rounded">
+                                <span>پشکنینی کۆتایی کاتی بارکردنە ناو کۆنتێنەر</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Service 4: Financial Transfers -->
+                    <div class="service-card border-2 border-slate-200 rounded-2xl p-4 sm:p-5 cursor-pointer" onclick="toggleService('money')">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="chk-money" class="w-5 h-5 accent-brand-500 rounded text-brand-500 focus:ring-brand-500" onclick="event.stopPropagation(); updateCardState('money');">
+                                <div>
+                                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                        ٤. حەواڵەکردنی پارە (Financial Transfers)
+                                    </h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">ناردنی پارە بۆ چین بە شێوازی خێرا و سەلامەت.</p>
+                                </div>
+                            </div>
+                            <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-purple-200 hidden sm:inline-block">داریی</span>
+                        </div>
+
+                        <!-- Sub Options -->
+                        <div id="sub-money" class="mt-4 pt-4 border-t border-slate-200/80 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden" onclick="event.stopPropagation();">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">ڕێگەی حەواڵەکردن</label>
+                                <select id="money-method" class="w-full p-2.5 text-xs bg-white border border-slate-300 rounded-lg">
+                                    <option value="WeChat Pay">حەواڵە بە WeChat Pay</option>
+                                    <option value="Alipay">حەواڵە بە Alipay</option>
+                                    <option value="Bank Transfer (TT)">حەواڵەکردنی بانکی (Bank Transfer)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">بڕی پارەی حەواڵەکراو ($ / RMB)</label>
+                                <input type="text" id="money-amount" placeholder="m.g. $5,000 یان 30,000 Yuan" class="w-full p-2.5 text-xs bg-white border border-slate-300 rounded-lg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 5: Translation -->
+                    <div class="service-card border-2 border-slate-200 rounded-2xl p-4 sm:p-5 cursor-pointer" onclick="toggleService('translation')">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="chk-translation" class="w-5 h-5 accent-brand-500 rounded text-brand-500 focus:ring-brand-500" onclick="event.stopPropagation(); updateCardState('translation');">
+                                <div>
+                                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                        ٥. وەرگێڕی زمانی چینی - کوردی (Translator)
+                                    </h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">وەرگێڕی شارەزا بۆ یاوەری لە پێشانگا و کارگەکانی چین.</p>
+                                </div>
+                            </div>
+                            <span class="bg-teal-100 text-teal-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-teal-200 hidden sm:inline-block">زمان</span>
+                        </div>
+
+                        <!-- Sub Options -->
+                        <div id="sub-translation" class="mt-4 pt-4 border-t border-slate-200/80 space-y-2 hidden" onclick="event.stopPropagation();">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <label class="flex items-center gap-2 bg-white p-2.5 border border-slate-200 rounded-xl cursor-pointer">
+                                    <input type="radio" name="trans-type" value="وەرگێڕی مەیدانی لە چین" class="accent-brand-500" checked>
+                                    <span class="text-xs font-semibold">وەرگێڕی مەیدانی (لە چین)</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-2.5 border border-slate-200 rounded-xl cursor-pointer">
+                                    <input type="radio" name="trans-type" value="وەرگێڕانی سەر هێڵ / کۆبوونەوە" class="accent-brand-500">
+                                    <span class="text-xs font-semibold">وەرگێڕانی سەر هێڵ / ئۆنلاین</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 6: Visa -->
+                    <div class="service-card border-2 border-slate-200 rounded-2xl p-4 sm:p-5 cursor-pointer" onclick="toggleService('visa')">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="chk-visa" class="w-5 h-5 accent-brand-500 rounded text-brand-500 focus:ring-brand-500" onclick="event.stopPropagation(); updateCardState('visa');">
+                                <div>
+                                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                        ٦. خزمەتگوزاریی ڤیزا و گەشت (Visa & Travel)
+                                    </h3>
+                                    <p class="text-xs text-slate-500 mt-0.5">دەرهێنانی ڤیزای چین و بانگهێشتنامەی فەرمیی کارگەکان.</p>
+                                </div>
+                            </div>
+                            <span class="bg-rose-100 text-rose-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-rose-200 hidden sm:inline-block">ڤیزا</span>
+                        </div>
+
+                        <!-- Sub Options -->
+                        <div id="sub-visa" class="mt-4 pt-4 border-t border-slate-200/80 space-y-2 hidden" onclick="event.stopPropagation();">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <label class="flex items-center gap-2 bg-white p-2.5 border border-slate-200 rounded-xl cursor-pointer">
+                                    <input type="radio" name="visa-type" value="ڤیزای بازرگانی (Business Visa)" class="accent-brand-500" checked>
+                                    <span class="text-xs font-semibold">ڤیزای بازرگانی (M/F)</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-2.5 border border-slate-200 rounded-xl cursor-pointer">
+                                    <input type="radio" name="visa-type" value="ڤیزای گەشتیاری (Tourist Visa)" class="accent-brand-500">
+                                    <span class="text-xs font-semibold">ڤیزای گەشتیاری (L)</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-white p-2.5 border border-slate-200 rounded-xl cursor-pointer">
+                                    <input type="radio" name="visa-type" value="بانگهێشتنامەی فەرمی" class="accent-brand-500">
+                                    <span class="text-xs font-semibold">بانگهێشتنامەی کارگە</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p id="err-service" class="text-xs text-rose-500 font-bold mt-3 hidden">تکایە بەلایەنی کەمەوە یەک خزمەتگوزاری هەڵبژێرە.</p>
+
+                <!-- Step 2 Navigation -->
+                <div class="mt-8 flex justify-between">
+                    <button type="button" onclick="nextStep(1)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-6 py-3 rounded-xl flex items-center gap-2 transition">
+                        <i class="ph-bold ph-arrow-right"></i>
+                        <span>گەڕانەوە</span>
+                    </button>
+                    <button type="button" onclick="nextStep(3)" class="bg-brand-500 hover:bg-brand-600 text-slateDark font-bold px-8 py-3 rounded-xl shadow-lg shadow-brand-500/20 flex items-center gap-2 transition transform active:scale-95">
+                        <span>قۆناغی دواتر</span>
+                        <i class="ph-bold ph-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 3: SUMMARY & SUBMISSION -->
+            <div id="step-3" class="step-panel bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="ph-bold ph-check-circle text-brand-500 text-2xl"></i>
+                        کۆتایی و پیاچوونەوەی داواکاری
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">تکایە پیاچوونەوە بۆ داواکارییەکەت بکە بەرلە ناردن.</p>
+                </div>
+
+                <!-- Live Summary Box -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                        <span class="text-xs font-bold text-slate-500 uppercase">پڕۆفایلی بەکارهێنەر</span>
+                        <span id="summary-name" class="font-extrabold text-slate-900 text-sm">-</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <span class="text-slate-500 block">ژمارەی پەیوەندی:</span>
+                            <span id="summary-phone" class="font-bold text-slate-800" dir="ltr">-</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">شار:</span>
+                            <span id="summary-city" class="font-bold text-slate-800">-</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-200">
+                        <span class="text-xs font-bold text-slate-500 uppercase block mb-2">خزمەتگوزارییە هەڵبژێردراوەکان:</span>
+                        <div id="summary-services-list" class="space-y-2">
+                            <!-- Populated dynamically via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Textarea -->
+                <div class="mb-6">
+                    <label class="block text-sm font-bold text-slate-800 mb-2" for="notes">
+                        تێبینی یان داواکاری تایبەت (ئارەزوومەندانە)
+                    </label>
+                    <textarea id="notes" rows="3" placeholder="ئەگەر تێبینییەکی زیاترت هەیە یان دەتەوێت وردەکاری زیاتر بنووسیت..."
+                        class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm transition"></textarea>
+                </div>
+
+                <!-- Submission Banner / Status Notice -->
+                <div id="submission-status-box" class="hidden mb-6 p-4 rounded-xl text-xs flex items-center gap-3"></div>
+
+                <!-- Submission Action Buttons -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                    <!-- Primary WhatsApp Direct Button -->
+                    <button type="button" onclick="submitToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition transform active:scale-95 text-sm">
+                        <i class="ph-bold ph-whatsapp-logo text-xl"></i>
+                        <span>ناردن بۆ واتسئاپ</span>
+                    </button>
+
+                    <!-- Webhook / API Submission Button -->
+                    <button type="button" onclick="submitToWebhookAPI()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 transition transform active:scale-95 text-sm">
+                        <i class="ph-bold ph-paper-plane-tilt text-xl"></i>
+                        <span>ناردنی راستەوخۆ (سیستم)</span>
+                    </button>
+                </div>
+
+                <!-- Secondary Actions (Print PDF & Payload View) -->
+                <div class="flex items-center justify-between pt-4 text-xs">
+                    <button type="button" onclick="openReceiptModal()" class="text-slate-600 hover:text-slate-900 font-semibold flex items-center gap-1">
+                        <i class="ph-bold ph-file-pdf text-base text-brand-600"></i>
+                        <span>پیشاندانی فۆرم / PDF</span>
+                    </button>
+
+                    <button type="button" onclick="openPayloadPreviewModal()" class="text-slate-500 hover:text-slate-800 flex items-center gap-1">
+                        <i class="ph-bold ph-code text-base"></i>
+                        <span>پیشاندانی دەقی خاو (JSON)</span>
+                    </button>
+                </div>
+
+                <!-- Step 3 Back -->
+                <div class="mt-6 border-t border-slate-100 pt-3">
+                    <button type="button" onclick="nextStep(2)" class="text-xs text-slate-500 hover:text-slate-800 font-semibold flex items-center gap-1 transition">
+                        <i class="ph-bold ph-arrow-right"></i>
+                        <span>گەڕانەوە بۆ دەستکاری خزمەتگوزارییەکان</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slateDark text-slate-400 text-xs py-6 border-t border-slate-800">
+        <div class="max-w-5xl mx-auto px-4 text-center space-y-2">
+            <p class="font-semibold text-slate-300">سەرجەم مافەکانی پارێزراوە بۆ کۆمپانیای نەوزاد چین © <span id="year"></span></p>
+            <p class="text-[11px] text-slate-500">چین - گووانگژۆ / عێراق - سلێمانی & هەولێر</p>
+        </div>
+    </footer>
+
+    <!-- SETTINGS & CONFIGURATION MODAL -->
+    <div id="configModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 relative">
+            
+            <button type="button" onclick="closeConfigModal()" class="absolute top-4 left-4 w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition">
+                <i class="ph-bold ph-x"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-brand-100 text-brand-700 rounded-xl flex items-center justify-center text-xl font-bold">
+                    <i class="ph-bold ph-gear-six"></i>
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-slate-900 text-base">ڕێکخستنی سیستمی وەرگرتن</h3>
+                    <p class="text-xs text-slate-500">بەستنی واتسئاپ و سێرڤەر بۆ وەرگرتنی داواکارییەکان</p>
+                </div>
+            </div>
+
+            <div class="space-y-4 text-xs">
+                <!-- Config WhatsApp Number -->
+                <div>
+                    <label class="block font-bold text-slate-800 mb-1">ژمارەی واتسئاپ (لەگەڵ کۆدی وڵات)</label>
+                    <input type="text" id="cfg-whatsapp" dir="ltr" placeholder="9647500000000" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-left font-mono focus:ring-2 focus:ring-brand-500">
+                    <p class="text-[10px] text-slate-400 mt-1">نموونە: 9647701234567 (بێ هێما یان زیڕۆی سەرەتا)</p>
+                </div>
+
+                <!-- Config Webhook Endpoint -->
+                <div>
+                    <label class="block font-bold text-slate-800 mb-1">ڕاوبەست یان API Endpoint (Webhook / Formspree)</label>
+                    <input type="url" id="cfg-webhook" dir="ltr" placeholder="https://formspree.io/f/your_id" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-left font-mono focus:ring-2 focus:ring-brand-500">
+                    <p class="text-[10px] text-slate-400 mt-1">ئۆپشناڵ: بەستەری Formspree یان Telegram Bot API یان Backend Server</p>
+                </div>
+
+                <!-- Save Feedback -->
+                <div id="cfg-save-status" class="hidden text-xs text-emerald-600 bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg text-center font-bold">
+                    زانیارییەکان بە سەرکەوتوویی لە براوسەرەکەت هەڵگیرا!
+                </div>
+
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="saveConfiguration()" class="flex-1 bg-brand-500 hover:bg-brand-600 text-slateDark font-bold py-2.5 rounded-xl transition text-xs shadow">
+                        پاشەکەوتکردن
+                    </button>
+                    <button type="button" onclick="closeConfigModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2.5 rounded-xl transition text-xs">
+                        پەشیمانبوونەوە
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- RECEIPT / ORDER SUMMARY MODAL -->
+    <div id="receiptModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative max-h-[90vh] overflow-y-auto" id="printable-modal">
+            
+            <button type="button" onclick="closeReceiptModal()" class="no-print absolute top-4 left-4 w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition">
+                <i class="ph-bold ph-x"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="text-center border-b border-slate-100 pb-5 mb-5">
+                <div class="w-12 h-12 bg-brand-500 text-slateDark rounded-2xl flex items-center justify-center font-black text-2xl mx-auto mb-2 shadow-md">
+                    N
+                </div>
+                <h3 class="font-extrabold text-xl text-slate-900">کۆمپانیای نەوزاد چین</h3>
+                <p class="text-xs text-slate-500 mt-0.5">پشکنین، کڕین و گواستنەوەی کاڵا لە چین</p>
+                <div class="mt-3 inline-block bg-slate-100 text-slate-700 text-[11px] font-mono px-3 py-1 rounded-full">
+                    کۆدی داواکاری: <span id="receipt-id" class="font-bold text-slate-900">#NZ-0000</span>
+                </div>
+            </div>
+
+            <!-- Client Info Details -->
+            <div class="space-y-3 text-xs mb-5 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div class="flex justify-between">
+                    <span class="text-slate-500">ناو:</span>
+                    <span id="modal-name" class="font-bold text-slate-900">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">مۆبایل:</span>
+                    <span id="modal-phone" class="font-bold text-slate-900" dir="ltr">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">شار:</span>
+                    <span id="modal-city" class="font-bold text-slate-900">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">بەروار:</span>
+                    <span id="modal-date" class="font-bold text-slate-900">-</span>
+                </div>
+            </div>
+
+            <!-- Ordered Services -->
+            <div class="mb-6">
+                <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wider mb-3">وردەکاری خزمەتگوزارییەکان:</h4>
+                <div id="modal-services" class="space-y-2 text-xs">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Notes in Modal -->
+            <div id="modal-notes-container" class="mb-6 hidden">
+                <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wider mb-1">تێبینی:</h4>
+                <p id="modal-notes" class="text-xs text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-200 italic"></p>
+            </div>
+
+            <!-- Modal Print Actions -->
+            <div class="no-print flex items-center gap-3 pt-4 border-t border-slate-100">
+                <button type="button" onclick="window.print()" class="flex-1 bg-brand-500 hover:bg-brand-600 text-slateDark font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2 text-xs">
+                    <i class="ph-bold ph-printer text-lg"></i>
+                    <span>پرینت / هەڵگرتن وەک PDF</span>
+                </button>
+                <button type="button" onclick="closeReceiptModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-3 rounded-xl transition text-xs">
+                    داخستن
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JSON PAYLOAD PREVIEW MODAL -->
+    <div id="payloadModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 relative">
+            <button type="button" onclick="closePayloadModal()" class="absolute top-4 left-4 w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition">
+                <i class="ph-bold ph-x"></i>
+            </button>
+
+            <h3 class="font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+                <i class="ph-bold ph-code text-brand-500"></i>
+                پێشاندانی داتای ڕاوبەست (JSON Payload)
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">ئەم داتایە دەگوێزرێتەوە بۆ سەر سێرڤەر یان بەکاردێت بۆ API:</p>
+
+            <pre id="payload-code" dir="ltr" class="bg-slate-900 text-emerald-400 font-mono text-[11px] p-4 rounded-xl overflow-x-auto max-h-60 mb-4"></pre>
+
+            <div class="flex justify-end gap-2">
+                <button type="button" onclick="copyPayloadToClipboard()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 transition">
+                    <i class="ph-bold ph-copy"></i>
+                    <span id="copy-btn-text">لەبەرگرتنەوە</span>
+                </button>
+                <button type="button" onclick="closePayloadModal()" class="bg-slate-100 text-slate-700 text-xs font-bold px-4 py-2 rounded-xl">
+                    داخستن
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global App State & Config Defaults
+        let currentStep = 1;
+        
+        let appConfig = {
+            whatsappNumber: localStorage.getItem('nawzad_wa') || '9647500000000',
+            webhookUrl: localStorage.getItem('nawzad_webhook') || ''
+        };
+
+        const selectedServices = {
+            sourcing: false,
+            cargo: false,
+            inspection: false,
+            money: false,
+            translation: false,
+            visa: false
+        };
+
+        // Initialize Dynamic Year and Config Values
+        document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('cfg-whatsapp').value = appConfig.whatsappNumber;
+        document.getElementById('cfg-webhook').value = appConfig.webhookUrl;
+
+        // Step Navigation Logic
+        function nextStep(step) {
+            if (step === 2 && currentStep === 1) {
+                if (!validateStep1()) return;
+            }
+
+            if (step === 3 && currentStep === 2) {
+                if (!validateStep2()) return;
+                populateSummary();
+            }
+
+            // Hide active panel
+            document.querySelectorAll('.step-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            // Show selected step panel
+            const targetPanel = document.getElementById(`step-${step}`);
+            targetPanel.classList.add('active');
+
+            currentStep = step;
+            updateProgressBar(step);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Update Wizard Visual Progress
+        function updateProgressBar(step) {
+            const activeLine = document.getElementById('progress-line-active');
+            const circle2 = document.getElementById('circle-2');
+            const circle3 = document.getElementById('circle-3');
+            const label2 = document.getElementById('label-step-2');
+            const label3 = document.getElementById('label-step-3');
+
+            if (step === 1) {
+                activeLine.style.width = '0%';
+                circle2.className = "w-10 h-10 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center ring-4 ring-white shadow transition-all duration-300";
+                circle3.className = "w-10 h-10 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center ring-4 ring-white shadow transition-all duration-300";
+                label2.className = "text-xs font-bold mt-2 text-slate-500";
+                label3.className = "text-xs font-bold mt-2 text-slate-500";
+            } else if (step === 2) {
+                activeLine.style.width = '50%';
+                circle2.className = "w-10 h-10 rounded-full bg-brand-500 text-slateDark font-bold flex items-center justify-center ring-4 ring-white shadow transition-all duration-300";
+                circle3.className = "w-10 h-10 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center ring-4 ring-white shadow transition-all duration-300";
+                label2.className = "text-xs font-bold mt-2 text-slate-800";
+                label3.className = "text-xs font-bold mt-2 text-slate-500";
+            } else if (step === 3) {
+                activeLine.style.width = '100%';
+                circle2.className = "w-10 h-10 rounded-full bg-brand-500 text-slateDark font-bold flex items-center justify-center ring-4 ring-white shadow transition-all duration-300";
+                circle3.className = "w-10 h-10 rounded-full bg-brand-500 text-slateDark font-bold flex items-center justify-center ring-4 ring-white shadow transition-all duration-300";
+                label2.className = "text-xs font-bold mt-2 text-slate-800";
+                label3.className = "text-xs font-bold mt-2 text-slate-800";
+            }
+        }
+
+        // Validate Step 1
+        function validateStep1() {
+            const name = document.getElementById('fullname').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const city = document.getElementById('city').value;
+
+            let valid = true;
+
+            if (!name) {
+                document.getElementById('err-fullname').classList.remove('hidden');
+                valid = false;
+            } else {
+                document.getElementById('err-fullname').classList.add('hidden');
+            }
+
+            if (!phone || phone.length < 8) {
+                document.getElementById('err-phone').classList.remove('hidden');
+                valid = false;
+            } else {
+                document.getElementById('err-phone').classList.add('hidden');
+            }
+
+            return valid && city !== "";
+        }
+
+        // Toggle Service Cards & Checkboxes
+        function toggleService(key) {
+            const checkbox = document.getElementById(`chk-${key}`);
+            checkbox.checked = !checkbox.checked;
+            updateCardState(key);
+        }
+
+        function updateCardState(key) {
+            const checkbox = document.getElementById(`chk-${key}`);
+            const card = checkbox.closest('.service-card');
+            const subMenu = document.getElementById(`sub-${key}`);
+
+            selectedServices[key] = checkbox.checked;
+
+            if (checkbox.checked) {
+                card.classList.add('selected');
+                if (subMenu) subMenu.classList.remove('hidden');
+            } else {
+                card.classList.remove('selected');
+                if (subMenu) subMenu.classList.add('hidden');
+            }
+        }
+
+        // Validate Step 2
+        function validateStep2() {
+            const hasSelection = Object.values(selectedServices).some(val => val === true);
+            const errElem = document.getElementById('err-service');
+
+            if (!hasSelection) {
+                errElem.classList.remove('hidden');
+                return false;
+            } else {
+                errElem.classList.add('hidden');
+                return true;
+            }
+        }
+
+        // Populate Summary Step
+        function populateSummary() {
+            document.getElementById('summary-name').textContent = document.getElementById('fullname').value;
+            document.getElementById('summary-phone').textContent = document.getElementById('phone').value;
+            document.getElementById('summary-city').textContent = document.getElementById('city').value;
+
+            const listContainer = document.getElementById('summary-services-list');
+            listContainer.innerHTML = '';
+
+            const servicesData = getSelectedServicesDetails();
+
+            servicesData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-white p-3 rounded-xl border border-slate-200 text-xs shadow-xs';
+                div.innerHTML = `<span class="font-bold text-slate-900 block mb-0.5">${item.title}</span><span class="text-slate-500">${item.details}</span>`;
+                listContainer.appendChild(div);
+            });
+        }
+
+        // Aggregate All Active Selected Services
+        function getSelectedServicesDetails() {
+            const details = [];
+
+            if (selectedServices.sourcing) {
+                const type = document.getElementById('source-type').value || 'دیاری نەکراوە';
+                const qty = document.getElementById('source-qty').value || 'دیاری نەکراوە';
+                const link = document.getElementById('source-link').value || 'نییە';
+                const price = document.getElementById('source-price').value || 'دیاری نەکراوە';
+                details.push({
+                    key: 'sourcing',
+                    title: '١. کڕینی کاڵا',
+                    details: `جۆر: ${type} | بڕ: ${qty} | نرخ/بودجە: ${price} | لینک: ${link}`,
+                    raw: { type, qty, link, price }
+                });
+            }
+
+            if (selectedServices.cargo) {
+                const cargoType = document.querySelector('input[name="cargo-type"]:checked')?.value || 'کۆنتێنەر';
+                details.push({
+                    key: 'cargo',
+                    title: '٢. هێنانەوە و گواستنەوەی کاڵا',
+                    details: `جۆری گواستنەوە: ${cargoType}`,
+                    raw: { cargoType }
+                });
+            }
+
+            if (selectedServices.inspection) {
+                const pre = document.getElementById('insp-pre').checked ? 'پشکنینی بەرلە کڕین' : '';
+                const load = document.getElementById('insp-loading').checked ? 'پشکنینی کاتی بارکردن' : '';
+                const inspDetails = [pre, load].filter(Boolean).join(' + ') || 'پشکنینی گشتی';
+                details.push({
+                    key: 'inspection',
+                    title: '٣. پشکنین و چێککردنەوە',
+                    details: inspDetails,
+                    raw: { pre: !!pre, loading: !!load }
+                });
+            }
+
+            if (selectedServices.money) {
+                const method = document.getElementById('money-method').value;
+                const amount = document.getElementById('money-amount').value || 'دیاری نەکراوە';
+                details.push({
+                    key: 'money',
+                    title: '٤. حەواڵەکردنی پارە',
+                    details: `ڕێگە: ${method} | بڕ: ${amount}`,
+                    raw: { method, amount }
+                });
+            }
+
+            if (selectedServices.translation) {
+                const transType = document.querySelector('input[name="trans-type"]:checked')?.value || 'وەرگێڕی مەیدانی';
+                details.push({
+                    key: 'translation',
+                    title: '٥. وەرگێڕی چینی-کوردی',
+                    details: transType,
+                    raw: { transType }
+                });
+            }
+
+            if (selectedServices.visa) {
+                const visaType = document.querySelector('input[name="visa-type"]:checked')?.value || 'ڤیزای بازرگانی';
+                details.push({
+                    key: 'visa',
+                    title: '٦. خزمەتگوزاریی ڤیزا',
+                    details: visaType,
+                    raw: { visaType }
+                });
+            }
+
+            return details;
+        }
+
+        // Construct Full JSON Object Payload
+        function buildFullObjectPayload() {
+            return {
+                timestamp: new Date().toISOString(),
+                client: {
+                    fullname: document.getElementById('fullname').value,
+                    phone: document.getElementById('phone').value,
+                    city: document.getElementById('city').value,
+                    notes: document.getElementById('notes').value
+                },
+                services: getSelectedServicesDetails()
+            };
+        }
+
+        // Submit Payload to WhatsApp Direct
+        function submitToWhatsApp() {
+            const name = document.getElementById('fullname').value;
+            const phone = document.getElementById('phone').value;
+            const city = document.getElementById('city').value;
+            const notes = document.getElementById('notes').value;
+
+            const services = getSelectedServicesDetails();
+
+            let message = `*داواکاری نوێ بۆ کۆمپانیای نەوزاد چین*\n`;
+            message += `-----------------------------------\n`;
+            message += `👤 *ناو:* ${name}\n`;
+            message += `📞 *مۆبایل:* ${phone}\n`;
+            message += `📍 *شار:* ${city}\n\n`;
+            message += `📦 *خزمەتگوزارییە هەڵبژێردراوەکان:*\n`;
+
+            services.forEach((s, idx) => {
+                message += `${idx + 1}. *${s.title}*\n   - ${s.details}\n`;
+            });
+
+            if (notes.trim() !== '') {
+                message += `\n📝 *تێبینی:* ${notes}\n`;
+            }
+
+            message += `\n-----------------------------------\n_نێردراوە لە ڕێگەی ماڵپەڕی فەرمی نەوزاد چین_`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const cleanPhone = appConfig.whatsappNumber.replace(/[^0-9]/g, '');
+            
+            showStatusNotice('تکایە چاوەڕێ بکە... ئاڕاستە دەکرێیت بۆ واتسئاپ', 'bg-emerald-50 text-emerald-800 border-emerald-300');
+
+            setTimeout(() => {
+                window.open(`https://wa.me/${cleanPhone}?text=${encodedMessage}`, '_blank');
+            }, 600);
+        }
+
+        // Submit via Webhook / Server Endpoint
+        async function submitToWebhookAPI() {
+            const payload = buildFullObjectPayload();
+            const statusBox = document.getElementById('submission-status-box');
+
+            if (!appConfig.webhookUrl) {
+                showStatusNotice('تکایە سەرەتا بەستەری Webhook لە هەڵبژاردنی "ڕێکخستنی وەرگرتن" دانێ.', 'bg-amber-50 text-amber-800 border-amber-300');
+                openConfigModal();
+                return;
+            }
+
+            showStatusNotice('داتاکان لە پرۆسەی ناردندان بۆ سێرڤەر...', 'bg-blue-50 text-blue-800 border-blue-300');
+
+            try {
+                const response = await fetch(appConfig.webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    showStatusNotice('داواکارییەکەت بە سەرکەوتوویی لە سێرڤەر تۆمارکرا! سوپاس.', 'bg-emerald-50 text-emerald-800 border-emerald-300');
+                } else {
+                    showStatusNotice('کێشەیەک ڕوویدا لە ناردندا. تکایە دووبارە هەوڵبدەرەوە یان واتسئاپ بەکاربهێنە.', 'bg-rose-50 text-rose-800 border-rose-300');
+                }
+            } catch (err) {
+                showStatusNotice('پەیوەندی لەگەڵ سێرڤەر سەرکەوتوو نەبوو. واتسئاپ بەکاربهێنە.', 'bg-rose-50 text-rose-800 border-rose-300');
+            }
+        }
+
+        // Helper for Notice Display
+        function showStatusNotice(msg, classNames) {
+            const box = document.getElementById('submission-status-box');
+            box.className = `mb-6 p-4 rounded-xl text-xs flex items-center gap-3 border ${classNames}`;
+            box.innerHTML = `<i class="ph-bold ph-info text-lg"></i><span>${msg}</span>`;
+            box.classList.remove('hidden');
+        }
+
+        // Modal Controllers
+        function openConfigModal() {
+            document.getElementById('configModal').classList.remove('hidden');
+        }
+
+        function closeConfigModal() {
+            document.getElementById('configModal').classList.add('hidden');
+            document.getElementById('cfg-save-status').classList.add('hidden');
+        }
+
+        function saveConfiguration() {
+            const wa = document.getElementById('cfg-whatsapp').value.trim();
+            const url = document.getElementById('cfg-webhook').value.trim();
+
+            if (wa) {
+                appConfig.whatsappNumber = wa;
+                localStorage.setItem('nawzad_wa', wa);
+            }
+
+            if (url) {
+                appConfig.webhookUrl = url;
+                localStorage.setItem('nawzad_webhook', url);
+            }
+
+            const status = document.getElementById('cfg-save-status');
+            status.classList.remove('hidden');
+            setTimeout(() => {
+                closeConfigModal();
+            }, 1200);
+        }
+
+        function openReceiptModal() {
+            const name = document.getElementById('fullname').value;
+            const phone = document.getElementById('phone').value;
+            const city = document.getElementById('city').value;
+            const notes = document.getElementById('notes').value;
+
+            document.getElementById('modal-name').textContent = name || '-';
+            document.getElementById('modal-phone').textContent = phone || '-';
+            document.getElementById('modal-city').textContent = city || '-';
+            document.getElementById('modal-date').textContent = new Date().toLocaleDateString('en-GB');
+            document.getElementById('receipt-id').textContent = '#NZ-' + Math.floor(1000 + Math.random() * 9000);
+
+            const servicesContainer = document.getElementById('modal-services');
+            servicesContainer.innerHTML = '';
+
+            const services = getSelectedServicesDetails();
+            services.forEach(s => {
+                const item = document.createElement('div');
+                item.className = 'bg-slate-50 p-2.5 rounded-lg border border-slate-200';
+                item.innerHTML = `<span class="font-bold text-slate-900 block">${s.title}</span><span class="text-slate-500 text-[11px]">${s.details}</span>`;
+                servicesContainer.appendChild(item);
+            });
+
+            if (notes && notes.trim()) {
+                document.getElementById('modal-notes').textContent = notes;
+                document.getElementById('modal-notes-container').classList.remove('hidden');
+            } else {
+                document.getElementById('modal-notes-container').classList.add('hidden');
+            }
+
+            document.getElementById('receiptModal').classList.remove('hidden');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').classList.add('hidden');
+        }
+
+        function openPayloadPreviewModal() {
+            const payload = buildFullObjectPayload();
+            document.getElementById('payload-code').textContent = JSON.stringify(payload, null, 2);
+            document.getElementById('payloadModal').classList.remove('hidden');
+        }
+
+        function closePayloadModal() {
+            document.getElementById('payloadModal').classList.add('hidden');
+        }
+
+        function copyPayloadToClipboard() {
+            const text = document.getElementById('payload-code').textContent;
+            
+            // Clipboard copy fallbacks
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const btnText = document.getElementById('copy-btn-text');
+            btnText.textContent = 'لەبەرگیراوە!';
+            setTimeout(() => {
+                btnText.textContent = 'لەبەرگرتنەوە';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
